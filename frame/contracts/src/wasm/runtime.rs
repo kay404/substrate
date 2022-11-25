@@ -2443,4 +2443,26 @@ pub mod env {
 			Err(_) => Ok(ReturnCode::EcdsaRecoverFailed),
 		}
 	}
+
+	#[prefixed_alias]
+	fn mimc_sponge(
+		ctx: Runtime<E>,
+		left_ptr: u32,
+		right_ptr: u32,
+		out_ptr: u32,
+	) -> Result<ReturnCode, TrapReason> {
+		ctx.charge_gas(RuntimeCosts::EcdsaToEthAddress)?;
+		let mut left: [u8; 32] = [0; 32];
+		ctx.read_sandbox_memory_into_buf(left_ptr, &mut left)?;
+		let mut right: [u8; 32] = [0; 32];
+		ctx.read_sandbox_memory_into_buf(right_ptr, &mut right)?;
+		let result = ctx.ext.mimc_sponge(&left, &right);
+		match result {
+			Ok(hash) => {
+				ctx.write_sandbox_memory(out_ptr, hash.as_ref())?;
+				Ok(ReturnCode::Success)
+			},
+			Err(_) => Ok(ReturnCode::EcdsaRecoverFailed),
+		}
+	}
 }

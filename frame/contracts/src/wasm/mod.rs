@@ -546,8 +546,8 @@ mod tests {
 		fn ecdsa_to_eth_address(&self, _pk: &[u8; 33]) -> Result<[u8; 20], ()> {
 			Ok([2u8; 20])
 		}
-		fn mimc_sponge(&self, _input: &[&str; 2]) -> Result<[u64; 4], ()> {
-			Ok([2u64; 4])
+		fn mimc_sponge(&self, _left: &[u8; 32], _right: &[u8; 32]) -> Result<[u8; 32], ()> {
+			Ok([0; 32])
 		}
 	}
 
