@@ -20,6 +20,7 @@ use crate::{
 	storage::{self, Storage, WriteOutcome},
 	BalanceOf, CodeHash, Config, ContractInfo, ContractInfoOf, Error, Event, Nonce,
 	Pallet as Contracts, Schedule,
+	iv_constants::{IV, SCALAR_FIELD}
 };
 use frame_support::{
 	crypto::ecdsa::ECDSAExt,
@@ -36,6 +37,7 @@ use sp_core::{crypto::UncheckedFrom, ecdsa::Public as ECDSAPublic};
 use sp_io::{crypto::secp256k1_ecdsa_recover_compressed, hashing::blake2_256};
 use sp_runtime::traits::{Convert, Hash};
 use sp_std::{marker::PhantomData, mem, prelude::*};
+use zkp_u256::U256;
 
 pub type AccountIdOf<T> = <T as frame_system::Config>::AccountId;
 pub type MomentOf<T> = <<T as Config>::Time as Time>::Moment;
@@ -289,6 +291,8 @@ pub trait Ext: sealing::Sealed {
 
 	/// Returns Ethereum address from the ECDSA compressed public key.
 	fn ecdsa_to_eth_address(&self, pk: &[u8; 33]) -> Result<[u8; 20], ()>;
+
+	fn mimc_sponge(&self, input: Vec<&str>) -> Result<[u64; 4], ()>;
 
 	/// Tests sometimes need to modify and inspect the contract info directly.
 	#[cfg(test)]
@@ -1320,6 +1324,31 @@ where
 
 	fn ecdsa_to_eth_address(&self, pk: &[u8; 33]) -> Result<[u8; 20], ()> {
 		ECDSAPublic(*pk).to_eth_address()
+	}
+
+	fn mimc_sponge(&self, inputs: Vec<&str>) -> Result<[u64; 4], ()> {
+		let p = U256::from_decimal_str(SCALAR_FIELD).unwrap();
+			let mut left = U256::ZERO;
+			let mut right = U256::ZERO;
+			let mut t;
+			let mut a;
+			let k = U256::ZERO;
+			for elt in inputs {
+				left = left + U256::from_hex_str(elt) % &p;
+				for i in 0..(220 - 1) {
+					t = (&left + U256::from_decimal_str(IV[i]).unwrap() + &k) % &p;
+					a = t.mulmod(&t, &p); // t^2
+					let l_new = (a.mulmod(&a, &p).mulmod(&t, &p) + right) % &p;
+					right = left.clone();
+					left = l_new;
+						// ink_env::debug_println!("hash: {}", left.to_decimal_string());
+				}
+				t = (&k + &left) % &p;
+				a = t.mulmod(&t, &p); // t^2
+				right = (a.mulmod(&a, &p).mulmod(&t, &p) + right) % &p; // t^5
+			}
+			// ink_env::debug_println!("hash: {}", left.to_hex_string());
+			Ok(*left.as_limbs())
 	}
 
 	#[cfg(test)]

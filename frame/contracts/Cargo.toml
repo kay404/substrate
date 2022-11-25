@@ -44,6 +44,8 @@ sp-io = { version = "6.0.0", default-features = false, path = "../../primitives/
 sp-runtime = { version = "6.0.0", default-features = false, path = "../../primitives/runtime" }
 sp-sandbox = { version = "0.10.0-dev", default-features = false, path = "../../primitives/sandbox" }
 sp-std = { version = "4.0.0", default-features = false, path = "../../primitives/std" }
+zkp-u256 = { git = "https://github.com/GreenLemonProtocol/OpenZKP", branch = "master", default-features = false }
+hex = { version = "0.4.3", default-features = false, features = ["alloc"] }
 
 [dev-dependencies]
 array-bytes = "4.1"
