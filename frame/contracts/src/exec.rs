@@ -292,7 +292,7 @@ pub trait Ext: sealing::Sealed {
 	/// Returns Ethereum address from the ECDSA compressed public key.
 	fn ecdsa_to_eth_address(&self, pk: &[u8; 33]) -> Result<[u8; 20], ()>;
 
-	fn mimc_sponge(&self, input: Vec<&str>) -> Result<[u64; 4], ()>;
+	fn mimc_sponge(&self, input: &[&str; 2]) -> Result<[u64; 4], ()>;
 
 	/// Tests sometimes need to modify and inspect the contract info directly.
 	#[cfg(test)]
@@ -1326,7 +1326,7 @@ where
 		ECDSAPublic(*pk).to_eth_address()
 	}
 
-	fn mimc_sponge(&self, inputs: Vec<&str>) -> Result<[u64; 4], ()> {
+	fn mimc_sponge(&self, inputs: &[&str; 2]) -> Result<[u64; 4], ()> {
 		let p = U256::from_decimal_str(SCALAR_FIELD).unwrap();
 			let mut left = U256::ZERO;
 			let mut right = U256::ZERO;
@@ -1334,7 +1334,7 @@ where
 			let mut a;
 			let k = U256::ZERO;
 			for elt in inputs {
-				left = left + U256::from_hex_str(elt) % &p;
+				left = left + U256::from_hex_str(*elt) % &p;
 				for i in 0..(220 - 1) {
 					t = (&left + U256::from_decimal_str(IV[i]).unwrap() + &k) % &p;
 					a = t.mulmod(&t, &p); // t^2

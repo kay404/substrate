@@ -546,6 +546,9 @@ mod tests {
 		fn ecdsa_to_eth_address(&self, _pk: &[u8; 33]) -> Result<[u8; 20], ()> {
 			Ok([2u8; 20])
 		}
+		fn mimc_sponge(&self, input: &[&str; 2]) -> Result<[u64; 4], ()> {
+			Ok([2u64; 4])
+		}
 	}
 
 	fn execute<E: BorrowMut<MockExt>>(wat: &str, input_data: Vec<u8>, mut ext: E) -> ExecResult {
