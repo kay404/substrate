@@ -1263,7 +1263,7 @@ dependencies = [
  "cranelift-codegen 0.88.0",
  "cranelift-entity 0.88.0",
  "cranelift-frontend 0.88.0",
- "itertools",
+ "itertools 0.10.3",
  "log",
  "smallvec",
  "wasmparser 0.89.1",
@@ -1291,7 +1291,7 @@ dependencies = [
  "criterion-plot",
  "csv",
  "futures",
- "itertools",
+ "itertools 0.10.3",
  "lazy_static",
  "num-traits",
  "oorandom",
@@ -1314,7 +1314,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d00996de9f2f7559f7f4dc286073197f83e92256a59ed395f9aac01fe717da57"
 dependencies = [
  "cast",
- "itertools",
+ "itertools 0.10.3",
 ]
 
 [[package]]
@@ -2134,7 +2134,7 @@ dependencies = [
  "gethostname",
  "handlebars",
  "hash-db",
- "itertools",
+ "itertools 0.10.3",
  "kvdb",
  "lazy_static",
  "linked-hash-map",
@@ -2296,7 +2296,7 @@ dependencies = [
  "Inflector",
  "cfg-expr",
  "frame-support-procedural-tools",
- "itertools",
+ "itertools 0.10.3",
  "proc-macro2",
  "quote",
  "syn",
@@ -3092,6 +3092,15 @@ name = "ipnet"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "879d54834c8c76457ef4293a689b2a8c59b076067ad77b15efafbb05f92a592b"
+
+[[package]]
+name = "itertools"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "284f18f85651fe11e8a991b2adb42cb078325c996ed026d994719efcfca1d54b"
+dependencies = [
+ "either",
+]
 
 [[package]]
 name = "itertools"
@@ -4436,6 +4445,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "no-std-compat"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b93853da6d84c2e3c7d730d6473e8817692dd89be387eb01b94d7f108ecb5b8c"
+
+[[package]]
 name = "node-bench"
 version = "0.9.0-dev"
 dependencies = [
@@ -5295,6 +5310,7 @@ dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
+ "hex",
  "impl-trait-for-tuples",
  "log",
  "pallet-balances",
@@ -5320,6 +5336,7 @@ dependencies = [
  "wasm-instrument",
  "wasmi-validation",
  "wat",
+ "zkp-u256",
 ]
 
 [[package]]
@@ -5656,7 +5673,7 @@ dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
- "itertools",
+ "itertools 0.10.3",
  "parity-scale-codec",
  "scale-info",
  "sp-core",
@@ -6767,7 +6784,7 @@ checksum = "c143348f141cc87aab5b950021bac6145d0e5ae754b0591de23244cee42c9308"
 dependencies = [
  "difflib",
  "float-cmp",
- "itertools",
+ "itertools 0.10.3",
  "normalize-line-endings",
  "predicates-core",
  "regex",
@@ -6918,7 +6935,7 @@ checksum = "7f835c582e6bd972ba8347313300219fed5bfa52caf175298d860b61ff6069bb"
 dependencies = [
  "bytes",
  "heck",
- "itertools",
+ "itertools 0.10.3",
  "lazy_static",
  "log",
  "multimap",
@@ -6950,7 +6967,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7345d5f0e08c0536d7ac7229952590239e77abf0a0100a1b1d890add6ea96364"
 dependencies = [
  "anyhow",
- "itertools",
+ "itertools 0.10.3",
  "proc-macro2",
  "quote",
  "syn",
@@ -12128,6 +12145,18 @@ dependencies = [
  "quote",
  "syn",
  "synstructure",
+]
+
+[[package]]
+name = "zkp-u256"
+version = "0.2.0"
+source = "git+https://github.com/GreenLemonProtocol/OpenZKP?branch=master#dceb4ff46ee472d8a8f493d0abb7ff192e52a508"
+dependencies = [
+ "crunchy",
+ "hex",
+ "itertools 0.9.0",
+ "no-std-compat",
+ "num-traits",
 ]
 
 [[package]]
